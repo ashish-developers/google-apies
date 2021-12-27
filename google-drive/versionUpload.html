@@ -1,0 +1,28 @@
+<input id="fileupload" type="file" name="fileupload" />
+<button id="upload-button" onclick="uploadFile()"> Upload </button>
+
+<script>
+async function uploadFile() {
+
+  let token = `ya29.A0ARrdaM8NDnCEZp2kZGf22UMdU4f9Pb_fN18SzuI6pe7q7sEwFJHb0XKLqEAyv3f3mRlpqIqGaOkf_CXkOBCRUaSOlwkREEnxKdP9_WZZV4rMFUKoSzINiQl25viuBj0OWeYyZnXh3_hWnHZ1NLzpqYibuHgS`;
+  let name = `ashishMishra.jpg`;
+  let mimeType = `image/jpeg`;
+  let metaData = { name, mimeType }
+  let uploadSourceId = `1LQKKmLw_OZCjipP8o0VEi1FK4JwCJz8X`
+  let url = `https://www.googleapis.com/upload/drive/v3/files/${uploadSourceId}?uploadType=multipart`
+
+  var form = new FormData()
+  form.append('metadata', new Blob([JSON.stringify(metaData)], { type: 'application/json' }))
+  form.append('file', fileupload.files[0])
+
+  fetch(url, {
+      method: 'PATCH',
+      headers: new Headers({ 'Authorization': 'Bearer ' + token, responseType: 'json' }),
+      body: form,
+  }).then((res) => {
+      return res.json();
+  }).then(function(val) {
+      console.log(val);
+  });
+}
+</script>
